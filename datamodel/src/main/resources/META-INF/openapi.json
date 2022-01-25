@@ -335,7 +335,8 @@
                         "type": "string"
                     },
                     "organizationId": {
-                        "description": ""
+                        "description": "",
+                        "type": "string"
                     },
                     "resources": {
                         "description": "The list of resources that this tenant has available",

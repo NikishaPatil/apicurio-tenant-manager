@@ -64,7 +64,7 @@ public class ApicurioTenant {
      */
     @JsonProperty("organizationId")
     @JsonPropertyDescription("")
-    private Object organizationId;
+    private String organizationId;
     /**
      * The list of resources that this tenant has available
      * 
@@ -165,7 +165,7 @@ public class ApicurioTenant {
      * 
      */
     @JsonProperty("organizationId")
-    public Object getOrganizationId() {
+    public String getOrganizationId() {
         return organizationId;
     }
 
@@ -175,7 +175,7 @@ public class ApicurioTenant {
      * 
      */
     @JsonProperty("organizationId")
-    public void setOrganizationId(Object organizationId) {
+    public void setOrganizationId(String organizationId) {
         this.organizationId = organizationId;
     }
 
