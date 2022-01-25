@@ -17,9 +17,7 @@ package io.apicurio.multitenant.api;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -33,21 +31,21 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import io.apicurio.multitenant.api.datamodel.NewRegistryTenantRequest;
-import io.apicurio.multitenant.api.datamodel.RegistryTenant;
-import io.apicurio.multitenant.api.datamodel.RegistryTenantList;
-import io.apicurio.multitenant.api.datamodel.ResourceType;
+import io.apicurio.multitenant.api.datamodel.NewApicurioTenantRequest;
+import io.apicurio.multitenant.api.datamodel.ApicurioTenant;
+import io.apicurio.multitenant.api.datamodel.ApicurioTenantList;
 import io.apicurio.multitenant.api.datamodel.SortBy;
 import io.apicurio.multitenant.api.datamodel.SortOrder;
 import io.apicurio.multitenant.api.datamodel.TenantStatusValue;
-import io.apicurio.multitenant.api.datamodel.UpdateRegistryTenantRequest;
+import io.apicurio.multitenant.api.datamodel.UpdateApicurioTenantRequest;
 import io.apicurio.multitenant.api.dto.DtoMappers;
+import io.apicurio.multitenant.api.services.TenantResourcesService;
 import io.apicurio.multitenant.api.services.TenantStatusService;
 import io.apicurio.multitenant.logging.audit.Audited;
 import io.apicurio.multitenant.metrics.UsageMetrics;
-import io.apicurio.multitenant.storage.RegistryTenantStorage;
+import io.apicurio.multitenant.storage.ApicurioTenantStorage;
 import io.apicurio.multitenant.storage.TenantNotFoundException;
-import io.apicurio.multitenant.storage.dto.RegistryTenantDto;
+import io.apicurio.multitenant.storage.dto.ApicurioTenantDto;
 import io.quarkus.panache.common.Parameters;
 import io.quarkus.panache.common.Sort;
 import io.quarkus.panache.common.Sort.Direction;
@@ -59,16 +57,19 @@ import io.quarkus.panache.common.Sort.Direction;
 public class TenantsResourceImpl implements TenantsResource {
 
     @Inject
-    RegistryTenantStorage tenantsRepository;
+    ApicurioTenantStorage tenantsRepository;
 
     @Inject
     TenantStatusService tenantStatusService;
 
     @Inject
+    TenantResourcesService resourcesService;
+
+    @Inject
     UsageMetrics usageMetrics;
 
     @Override
-    public RegistryTenantList getTenants(@QueryParam("status") String status,
+    public ApicurioTenantList getTenants(@QueryParam("status") String status,
             @QueryParam("offset") @Min(0) Integer offset, @QueryParam("limit") @Min(1) @Max(500) Integer limit,
             @QueryParam("order") SortOrder order, @QueryParam("orderby") SortBy orderby) {
 
@@ -86,11 +87,11 @@ public class TenantsResourceImpl implements TenantsResource {
             parameters = parameters.and("status", status);
         }
 
-        List<RegistryTenantDto> items = tenantsRepository.queryTenants(query, sort, parameters, offset, limit);
+        List<ApicurioTenantDto> items = tenantsRepository.queryTenants(query, sort, parameters, offset, limit);
         Long total = tenantsRepository.count(query, parameters);
 
-        RegistryTenantList list = new RegistryTenantList();
-        list.setItems(items.stream().map(RegistryTenantDto::toDatamodel).collect(Collectors.toList()));
+        ApicurioTenantList list = new ApicurioTenantList();
+        list.setItems(items.stream().map(ApicurioTenantDto::toDatamodel).collect(Collectors.toList()));
         list.setCount(total.intValue());
         return list;
     }
@@ -98,12 +99,12 @@ public class TenantsResourceImpl implements TenantsResource {
     @Override
     @Transactional
     @Audited
-    public Response createTenant(NewRegistryTenantRequest tenantRequest) {
+    public Response createTenant(NewApicurioTenantRequest tenantRequest) {
 
         required(tenantRequest.getTenantId(), "TenantId is mandatory");
         required(tenantRequest.getOrganizationId(), "OrganizationId is mandatory");
 
-        RegistryTenantDto tenant = new RegistryTenantDto();
+        ApicurioTenantDto tenant = new ApicurioTenantDto();
 
         tenant.setTenantId(tenantRequest.getTenantId());
         tenant.setOrganizationId(tenantRequest.getOrganizationId());
@@ -115,13 +116,7 @@ public class TenantsResourceImpl implements TenantsResource {
 
         if (tenantRequest.getResources() != null) {
             //find duplicates, invalid config
-            Set<ResourceType> items = new HashSet<>();
-            for (var resource : tenantRequest.getResources()) {
-                if (!items.add(resource.getType())) {
-                    throw new BadRequestException(
-                            String.format("Invalid configuration, resource type %s is duplicated", resource.getType().name()));
-                }
-            }
+            resourcesService.validateResources(tenantRequest.getResources());
 
             tenantRequest.getResources()
                 .stream()
@@ -135,21 +130,21 @@ public class TenantsResourceImpl implements TenantsResource {
     }
 
     @Override
-    public RegistryTenant getTenant(@PathParam("tenantId") String tenantId) {
+    public ApicurioTenant getTenant(@PathParam("tenantId") String tenantId) {
         return tenantsRepository.findByTenantId(tenantId)
-                .map(RegistryTenantDto::toDatamodel)
+                .map(ApicurioTenantDto::toDatamodel)
                 .orElseThrow(() -> TenantNotFoundException.create(tenantId));
     }
 
     /**
-     * @see io.apicurio.multitenant.api.TenantsResource#updateTenant(java.lang.String, io.apicurio.multitenant.api.datamodel.UpdateRegistryTenantRequest)
+     * @see io.apicurio.multitenant.api.TenantsResource#updateTenant(java.lang.String, io.apicurio.multitenant.api.datamodel.UpdateApicurioTenantRequest)
      */
     @Override
     @Transactional
     @Audited
-    public void updateTenant(String tenantId, UpdateRegistryTenantRequest tenantRequest) {
+    public void updateTenant(String tenantId, UpdateApicurioTenantRequest tenantRequest) {
         boolean updated = false;
-        RegistryTenantDto tenant = tenantsRepository.findByTenantId(tenantId).orElseThrow(() -> TenantNotFoundException.create(tenantId));
+        ApicurioTenantDto tenant = tenantsRepository.findByTenantId(tenantId).orElseThrow(() -> TenantNotFoundException.create(tenantId));
         if (tenantRequest.getName() != null) {
             tenant.setName(tenantRequest.getName());
             updated = true;
@@ -161,13 +156,7 @@ public class TenantsResourceImpl implements TenantsResource {
 
         if (tenantRequest.getResources() != null) {
             //find duplicates, invalid config
-            Set<ResourceType> items = new HashSet<>();
-            for (var resource : tenantRequest.getResources()) {
-                if (!items.add(resource.getType())) {
-                    throw new BadRequestException(
-                            String.format("Invalid configuration, resource type %s is duplicated", resource.getType().name()));
-                }
-            }
+            resourcesService.validateResources(tenantRequest.getResources());
 
             // First remove all the old resources
             if (tenant.getResources() != null) {
@@ -204,7 +193,7 @@ public class TenantsResourceImpl implements TenantsResource {
     @Transactional
     @Audited
     public void deleteTenant(@PathParam("tenantId") String tenantId) {
-        RegistryTenantDto tenant = tenantsRepository.findByTenantId(tenantId).orElseThrow(() -> TenantNotFoundException.create(tenantId));
+        ApicurioTenantDto tenant = tenantsRepository.findByTenantId(tenantId).orElseThrow(() -> TenantNotFoundException.create(tenantId));
         if (!tenantStatusService.verifyTenantStatusChange(tenant, TenantStatusValue.TO_BE_DELETED)) {
             throw new BadRequestException(
                     String.format("Unable to mark tenant to be deleted, status change from %s to %s is not allowed", tenant.getStatus(), TenantStatusValue.TO_BE_DELETED.value()));

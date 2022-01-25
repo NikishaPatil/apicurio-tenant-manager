@@ -65,11 +65,10 @@ public class TenantManagerClientAuthTest extends TenantManagerClientTest {
         return this.createClient(auth);
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testWrongCreds() throws Exception {
         OidcAuth auth = new OidcAuth(httpClient, clientId, "wrongsecret");
         TenantManagerClient client = createClient(auth);
-        Assertions.assertThrows(NotAuthorizedException.class, client::listTenants);
+        Assertions.assertThrows(NotAuthorizedException.class, () -> client.listTenants(null, 0, 10, null, null));
     }
 }

@@ -28,8 +28,8 @@ import org.hibernate.exception.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.apicurio.multitenant.storage.dto.RegistryTenantDto;
-import io.apicurio.multitenant.storage.hibernate.RegistryTenantPanacheRepository;
+import io.apicurio.multitenant.storage.dto.ApicurioTenantDto;
+import io.apicurio.multitenant.storage.hibernate.ApicurioTenantPanacheRepository;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.panache.common.Parameters;
 import io.quarkus.panache.common.Sort;
@@ -38,15 +38,15 @@ import io.quarkus.panache.common.Sort;
  * @author Fabian Martinez
  */
 @ApplicationScoped
-public class RegistryTenantStorageImpl implements RegistryTenantStorage {
+public class ApicurioTenantStorageImpl implements ApicurioTenantStorage {
 
     Logger logger = LoggerFactory.getLogger(getClass());
 
     @Inject
-    RegistryTenantPanacheRepository repo;
+    ApicurioTenantPanacheRepository repo;
 
     @Override
-    public void save(RegistryTenantDto dto) {
+    public void save(ApicurioTenantDto dto) {
         try {
             repo.persistAndFlush(dto);
         } catch (PersistenceException e) {
@@ -62,21 +62,21 @@ public class RegistryTenantStorageImpl implements RegistryTenantStorage {
     }
 
     @Override
-    public Optional<RegistryTenantDto> findByTenantId(String tenantId) {
+    public Optional<ApicurioTenantDto> findByTenantId(String tenantId) {
         return repo.find("tenantId", tenantId).singleResultOptional();
     }
 
     @Override
     public void delete(String tenantId) {
-        RegistryTenantDto dto = findByTenantId(tenantId)
+        ApicurioTenantDto dto = findByTenantId(tenantId)
             .orElseThrow(() -> TenantNotFoundException.create(tenantId));
         repo.delete(dto);
     }
 
     @Override
-    public List<RegistryTenantDto> queryTenants(String query, Sort sort, Parameters parameters,
+    public List<ApicurioTenantDto> queryTenants(String query, Sort sort, Parameters parameters,
             Integer offset, Integer returnLimit) {
-        PanacheQuery<RegistryTenantDto> pq = null;
+        PanacheQuery<ApicurioTenantDto> pq = null;
         if (query == null || query.isEmpty()) {
             pq = repo.findAll(sort);
         } else {
@@ -92,14 +92,14 @@ public class RegistryTenantStorageImpl implements RegistryTenantStorage {
     }
 
     /**
-     * @see io.apicurio.multitenant.storage.RegistryTenantStorage#getTenantsCountByStatus()
+     * @see io.apicurio.multitenant.storage.ApicurioTenantStorage#getTenantsCountByStatus()
      */
     @SuppressWarnings("unchecked")
     @Override
     public Map<String, Long> getTenantsCountByStatus() {
         var res = new HashMap<String, Long>();
         List<Object[]> queryRes = this.repo.getEntityManager()
-                .createQuery("select r.status, count(r) from RegistryTenantDto r group by r.status")
+                .createQuery("select r.status, count(r) from ApicurioTenantDto r group by r.status")
                 .getResultList();
         for (Object[] qr : queryRes) {
             if (qr.length != 2)

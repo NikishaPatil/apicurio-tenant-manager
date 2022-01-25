@@ -19,20 +19,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import io.apicurio.multitenant.storage.dto.RegistryTenantDto;
+import io.apicurio.multitenant.storage.dto.ApicurioTenantDto;
 import io.quarkus.panache.common.Parameters;
 import io.quarkus.panache.common.Sort;
 
 /**
  * @author Fabian Martinez
  */
-public interface RegistryTenantStorage {
+public interface ApicurioTenantStorage {
 
-    void save(RegistryTenantDto dto);
+    void save(ApicurioTenantDto dto);
 
-    Optional<RegistryTenantDto> findByTenantId(String tenantId);
+    Optional<ApicurioTenantDto> findByTenantId(String tenantId);
 
-    List<RegistryTenantDto> queryTenants(String query, Sort sort, Parameters parameters, Integer offset, Integer limit);
+    List<ApicurioTenantDto> queryTenants(String query, Sort sort, Parameters parameters, Integer offset, Integer limit);
 
     long count(String query, Parameters parameters);
 

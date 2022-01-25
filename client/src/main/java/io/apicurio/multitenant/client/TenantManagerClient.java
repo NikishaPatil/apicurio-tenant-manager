@@ -15,13 +15,13 @@
  */
 package io.apicurio.multitenant.client;
 
-import io.apicurio.multitenant.api.datamodel.NewRegistryTenantRequest;
-import io.apicurio.multitenant.api.datamodel.RegistryTenant;
-import io.apicurio.multitenant.api.datamodel.RegistryTenantList;
+import io.apicurio.multitenant.api.datamodel.NewApicurioTenantRequest;
+import io.apicurio.multitenant.api.datamodel.ApicurioTenant;
+import io.apicurio.multitenant.api.datamodel.ApicurioTenantList;
 import io.apicurio.multitenant.api.datamodel.SortBy;
 import io.apicurio.multitenant.api.datamodel.SortOrder;
 import io.apicurio.multitenant.api.datamodel.TenantStatusValue;
-import io.apicurio.multitenant.api.datamodel.UpdateRegistryTenantRequest;
+import io.apicurio.multitenant.api.datamodel.UpdateApicurioTenantRequest;
 
 /**
  * @author Fabian Martinez
@@ -32,23 +32,23 @@ public interface TenantManagerClient {
      * List tenants using the provided search parameters.
      * All parameters can be null, the server will use default values
      */
-    public RegistryTenantList listTenants(TenantStatusValue status, Integer offset, Integer limit, SortOrder order, SortBy orderby);
+    public ApicurioTenantList listTenants(TenantStatusValue status, Integer offset, Integer limit, SortOrder order, SortBy orderby);
 
     /**
      * Creates a new tenant
      */
-    public RegistryTenant createTenant(NewRegistryTenantRequest tenantRequest);
+    public ApicurioTenant createTenant(NewApicurioTenantRequest tenantRequest);
 
     /**
      * Updates some tenant fields.
      * If some field is not provided it won't be updated.
      */
-    public void updateTenant(String tenantId, UpdateRegistryTenantRequest updateRequest);
+    public void updateTenant(String tenantId, UpdateApicurioTenantRequest updateRequest);
 
     /**
      * Retrieves the tenant information by tenantId
      */
-    public RegistryTenant getTenant(String tenantId);
+    public ApicurioTenant getTenant(String tenantId);
 
     /**
      * Updates the tenant status to {@link TenantStatusValue#TO_BE_DELETED}

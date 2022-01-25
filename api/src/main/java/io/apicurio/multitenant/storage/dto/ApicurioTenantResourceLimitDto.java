@@ -30,7 +30,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import io.apicurio.multitenant.api.datamodel.ResourceType;
 import io.apicurio.multitenant.api.datamodel.TenantResource;
 
 /**
@@ -38,23 +37,22 @@ import io.apicurio.multitenant.api.datamodel.TenantResource;
  */
 @Entity
 @Table(name = "tenantlimits")
-public class RegistryTenantResourceLimitDto {
+public class ApicurioTenantResourceLimitDto {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "resourcetype")
-    private ResourceType type;
+    private String type;
 
     @Column(name = "resourcelimit")
     private Long limit;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tenantId")
-    private RegistryTenantDto tenant;
+    private ApicurioTenantDto tenant;
 
     /**
      * @return the id
@@ -73,14 +71,14 @@ public class RegistryTenantResourceLimitDto {
     /**
      * @return the type
      */
-    public ResourceType getType() {
+    public String getType() {
         return type;
     }
 
     /**
      * @param type the type to set
      */
-    public void setType(ResourceType type) {
+    public void setType(String type) {
         this.type = type;
     }
 
@@ -108,14 +106,14 @@ public class RegistryTenantResourceLimitDto {
     /**
      * @return the tenant
      */
-    public RegistryTenantDto getTenant() {
+    public ApicurioTenantDto getTenant() {
         return tenant;
     }
 
     /**
      * @param tenant the tenant to set
      */
-    public void setTenant(RegistryTenantDto tenant) {
+    public void setTenant(ApicurioTenantDto tenant) {
         this.tenant = tenant;
     }
 
@@ -138,7 +136,7 @@ public class RegistryTenantResourceLimitDto {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        RegistryTenantResourceLimitDto other = (RegistryTenantResourceLimitDto) obj;
+        ApicurioTenantResourceLimitDto other = (ApicurioTenantResourceLimitDto) obj;
         return Objects.equals(id, other.id);
     }
 

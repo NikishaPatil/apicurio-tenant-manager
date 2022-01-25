@@ -13,19 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.apicurio.multitenant.storage.hibernate;
 
-package io.apicurio.multitenant.client.exception;
+import javax.enterprise.context.ApplicationScoped;
 
-import io.apicurio.rest.client.error.ApicurioRestClientException;
+import io.apicurio.multitenant.storage.dto.ApicurioTenantDto;
+import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
 
 /**
  * @author Fabian Martinez
  */
-public class RegistryTenantNotFoundException extends ApicurioRestClientException {
+@ApplicationScoped
+public class ApicurioTenantPanacheRepository implements PanacheRepositoryBase<ApicurioTenantDto, String> {
 
-    private static final long serialVersionUID = 1L;
-
-    public RegistryTenantNotFoundException(String message) {
-        super(message);
-    }
 }

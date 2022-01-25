@@ -32,8 +32,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.apicurio.multitenant.api.datamodel.TenantStatusValue;
-import io.apicurio.multitenant.storage.RegistryTenantStorage;
-import io.apicurio.multitenant.storage.dto.RegistryTenantDto;
+import io.apicurio.multitenant.storage.ApicurioTenantStorage;
+import io.apicurio.multitenant.storage.dto.ApicurioTenantDto;
 import io.micrometer.core.instrument.Gauge;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Tags;
@@ -54,7 +54,7 @@ public class UsageMetrics {
     MeterRegistry metrics;
 
     @Inject
-    RegistryTenantStorage tenantsRepository;
+    ApicurioTenantStorage tenantsRepository;
 
     @Inject
     @ConfigProperty(name = "tenant-manager.metrics.usage-statistics.cache-expiration-period-seconds")
@@ -103,7 +103,7 @@ public class UsageMetrics {
                 .register(metrics);
     }
 
-    public void tenantStatusChanged(RegistryTenantDto tenant) {
+    public void tenantStatusChanged(ApicurioTenantDto tenant) {
         if (TenantStatusValue.fromValue(tenant.getStatus()) == TenantStatusValue.DELETED) {
 
             if (tenant.getModifiedOn() == null) {

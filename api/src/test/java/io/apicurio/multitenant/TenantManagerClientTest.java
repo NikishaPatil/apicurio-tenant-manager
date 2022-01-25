@@ -33,17 +33,17 @@ import org.junit.jupiter.api.Test;
 
 import io.apicurio.multitenant.client.TenantManagerClient;
 import io.apicurio.multitenant.client.TenantManagerClientImpl;
-import io.apicurio.multitenant.client.exception.RegistryTenantNotFoundException;
+import io.apicurio.multitenant.client.exception.ApicurioTenantNotFoundException;
 import io.apicurio.multitenant.client.exception.TenantManagerClientException;
 import io.apicurio.multitenant.logging.audit.MockAuditLogService;
-import io.apicurio.multitenant.api.datamodel.NewRegistryTenantRequest;
-import io.apicurio.multitenant.api.datamodel.RegistryTenant;
-import io.apicurio.multitenant.api.datamodel.ResourceType;
+import io.apicurio.multitenant.api.datamodel.NewApicurioTenantRequest;
+import io.apicurio.multitenant.api.datamodel.ApicurioTenant;
+import io.apicurio.multitenant.api.datamodel.ApicurioTenantList;
 import io.apicurio.multitenant.api.datamodel.SortBy;
 import io.apicurio.multitenant.api.datamodel.SortOrder;
 import io.apicurio.multitenant.api.datamodel.TenantResource;
 import io.apicurio.multitenant.api.datamodel.TenantStatusValue;
-import io.apicurio.multitenant.api.datamodel.UpdateRegistryTenantRequest;
+import io.apicurio.multitenant.api.datamodel.UpdateApicurioTenantRequest;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.TestInstance;
 
@@ -71,16 +71,15 @@ public class TenantManagerClientTest {
     @BeforeEach
     @SuppressWarnings("deprecation")
     public void cleanup() {
-        List<RegistryTenant> list = client.listTenants();
-        list.forEach(t -> {
+        ApicurioTenantList list = client.listTenants(null, null, null, null, null);
+        list.getItems().forEach(t -> {
             if (t.getStatus() == TenantStatusValue.READY) {
                 client.deleteTenant(t.getTenantId());
             }
         });
-        var search = client.listTenants(TenantStatusValue.READY, null, null, null, null);
-        list = search.getItems();
-        assertEquals(0, list.size());
-        assertEquals(0, search.getCount());
+        list = client.listTenants(TenantStatusValue.READY, null, null, null, null);
+        assertEquals(0, list.getItems().size());
+        assertEquals(0, list.getCount());
     }
 
     @Test
@@ -88,17 +87,17 @@ public class TenantManagerClientTest {
         auditLogService.resetAuditLogs();
 
         //CRUD tenant1
-        NewRegistryTenantRequest req = new NewRegistryTenantRequest();
+        NewApicurioTenantRequest req = new NewApicurioTenantRequest();
         req.setTenantId(UUID.randomUUID().toString());
         req.setOrganizationId("aaa");
         req.setName("tenant1");
         req.setCreatedBy("apicurio");
         TenantResource tr = new TenantResource();
         tr.setLimit(5L);
-        tr.setType(ResourceType.MAX_TOTAL_SCHEMAS_COUNT);
+        tr.setType("MAX_TOTAL_SCHEMAS_COUNT");
         req.setResources(List.of(tr));
 
-        RegistryTenant tenant = client.createTenant(req);
+        ApicurioTenant tenant = client.createTenant(req);
 
         assertNotNull(tenant);
         assertNotNull(tenant.getTenantId());
@@ -114,18 +113,18 @@ public class TenantManagerClientTest {
 
         testUpdateTenant(tenant.getTenantId());
 
-        RegistryTenant tenant1updated = client.getTenant(tenant.getTenantId());
+        ApicurioTenant tenant1updated = client.getTenant(tenant.getTenantId());
 
         testDelete(tenant.getTenantId());
 
         //create tenant2
-        NewRegistryTenantRequest req2 = new NewRegistryTenantRequest();
+        NewApicurioTenantRequest req2 = new NewApicurioTenantRequest();
         req2.setTenantId(UUID.randomUUID().toString());
         req2.setOrganizationId("bbb");
         req2.setName("tenant2");
         req2.setCreatedBy("registry");
 
-        RegistryTenant tenant2 = client.createTenant(req2);
+        ApicurioTenant tenant2 = client.createTenant(req2);
 
         assertNotNull(tenant2);
         assertNotNull(tenant2.getTenantId());
@@ -175,7 +174,7 @@ public class TenantManagerClientTest {
     public void testPagination() {
         int totalItems = 15;
         for (int i = 0; i<totalItems ; i++ ) {
-            NewRegistryTenantRequest req = new NewRegistryTenantRequest();
+            NewApicurioTenantRequest req = new NewApicurioTenantRequest();
             req.setTenantId(UUID.randomUUID().toString());
             req.setOrganizationId(UUID.randomUUID().toString());
             client.createTenant(req);
@@ -213,7 +212,7 @@ public class TenantManagerClientTest {
 
     @Test
     public void testCreateDeleteCreate() {
-        NewRegistryTenantRequest req = new NewRegistryTenantRequest();
+        NewApicurioTenantRequest req = new NewApicurioTenantRequest();
         String tenantId = "testCreateDeleteCreate";
         req.setTenantId(tenantId);
         req.setOrganizationId("aaa");
@@ -225,11 +224,11 @@ public class TenantManagerClientTest {
         assertEquals(TenantStatusValue.TO_BE_DELETED, client.getTenant(tenantId).getStatus());
 
         //transition not allowed
-        UpdateRegistryTenantRequest upready = new UpdateRegistryTenantRequest();
+        UpdateApicurioTenantRequest upready = new UpdateApicurioTenantRequest();
         upready.setStatus(TenantStatusValue.READY);
         Assertions.assertThrows(TenantManagerClientException.class, () -> client.updateTenant(tenantId, upready));
 
-        UpdateRegistryTenantRequest updr = new UpdateRegistryTenantRequest();
+        UpdateApicurioTenantRequest updr = new UpdateApicurioTenantRequest();
         updr.setStatus(TenantStatusValue.DELETED);
         client.updateTenant(tenantId, updr);
         assertEquals(TenantStatusValue.DELETED, client.getTenant(tenantId).getStatus());
@@ -238,23 +237,23 @@ public class TenantManagerClientTest {
         Assertions.assertThrows(TenantManagerClientException.class, () -> client.createTenant(req));
     }
 
-    private void testGetTenant(String tenantId, NewRegistryTenantRequest req) {
-        RegistryTenant tenant = client.getTenant(tenantId);
+    private void testGetTenant(String tenantId, NewApicurioTenantRequest req) {
+        ApicurioTenant tenant = client.getTenant(tenantId);
 
         assertEquals(tenantId, tenant.getTenantId());
         assertEquals(req.getOrganizationId(), tenant.getOrganizationId());
         assertNotNull(req.getResources());
         assertNotNull(tenant.getResources());
-        assertEquals(RegistryTenantResourceTest.toString(req.getResources()), RegistryTenantResourceTest.toString(tenant.getResources()));
+        assertEquals(ApicurioTenantResourceTest.toString(req.getResources()), ApicurioTenantResourceTest.toString(tenant.getResources()));
     }
 
     private void testUpdateTenant(String tenantId) {
-        UpdateRegistryTenantRequest req = new UpdateRegistryTenantRequest();
+        UpdateApicurioTenantRequest req = new UpdateApicurioTenantRequest();
         req.setDescription("new description");
         req.setName("new name");
         TenantResource tr = new TenantResource();
         tr.setLimit(256L);
-        tr.setType(ResourceType.MAX_LABEL_SIZE_BYTES);
+        tr.setType("MAX_LABEL_SIZE_BYTES");
         req.setResources(List.of(tr));
         req.setStatus(TenantStatusValue.READY);
 
@@ -263,25 +262,25 @@ public class TenantManagerClientTest {
         testGetTenantUpdated(tenantId, req);
     }
 
-    private void testGetTenantUpdated(String tenantId, UpdateRegistryTenantRequest req) {
-        RegistryTenant tenant = client.getTenant(tenantId);
+    private void testGetTenantUpdated(String tenantId, UpdateApicurioTenantRequest req) {
+        ApicurioTenant tenant = client.getTenant(tenantId);
 
         assertEquals(tenantId, tenant.getTenantId());
         assertNotNull(req.getResources());
         assertNotNull(tenant.getResources());
         assertEquals(req.getName(), tenant.getName());
         assertEquals(req.getDescription(), tenant.getDescription());
-        assertEquals(RegistryTenantResourceTest.toString(req.getResources()), RegistryTenantResourceTest.toString(tenant.getResources()));
+        assertEquals(ApicurioTenantResourceTest.toString(req.getResources()), ApicurioTenantResourceTest.toString(tenant.getResources()));
     }
 
     public void testDelete(String tenantId) {
         client.deleteTenant(tenantId);
-        RegistryTenant tenant = client.getTenant(tenantId);
+        ApicurioTenant tenant = client.getTenant(tenantId);
         assertEquals(TenantStatusValue.TO_BE_DELETED, tenant.getStatus());
     }
 
     private void testTenantNotFound(String tenantId) {
-        Assertions.assertThrows(RegistryTenantNotFoundException.class, () -> {
+        Assertions.assertThrows(ApicurioTenantNotFoundException.class, () -> {
             client.getTenant(tenantId);
         });
     }

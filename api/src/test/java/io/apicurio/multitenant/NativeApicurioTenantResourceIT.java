@@ -13,17 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.apicurio.multitenant.storage.hibernate;
+package io.apicurio.multitenant;
 
-import javax.enterprise.context.ApplicationScoped;
-
-import io.apicurio.multitenant.storage.dto.RegistryTenantDto;
-import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
+import io.quarkus.test.junit.NativeImageTest;
 
 /**
  * @author Fabian Martinez
  */
-@ApplicationScoped
-public class RegistryTenantPanacheRepository implements PanacheRepositoryBase<RegistryTenantDto, String> {
+@NativeImageTest
+public class NativeApicurioTenantResourceIT extends ApicurioTenantResourceTest {
 
+    // Execute the same tests but in native mode.
 }

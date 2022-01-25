@@ -25,8 +25,8 @@ import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
 
-import io.apicurio.multitenant.api.datamodel.NewRegistryTenantRequest;
-import io.apicurio.multitenant.api.datamodel.UpdateRegistryTenantRequest;
+import io.apicurio.multitenant.api.datamodel.NewApicurioTenantRequest;
+import io.apicurio.multitenant.api.datamodel.UpdateApicurioTenantRequest;
 import io.quarkus.security.identity.SecurityIdentity;
 
 /**
@@ -65,16 +65,16 @@ public class AuditedInterceptor {
         }
 
         for (Object parameter : context.getParameters()) {
-            if (parameter instanceof NewRegistryTenantRequest) {
-                NewRegistryTenantRequest tenant = (NewRegistryTenantRequest) parameter;
+            if (parameter instanceof NewApicurioTenantRequest) {
+                NewApicurioTenantRequest tenant = (NewApicurioTenantRequest) parameter;
                 metadata.put("tenantId", tenant.getTenantId());
                 metadata.put("orgId", tenant.getOrganizationId());
                 metadata.put("name", tenant.getName());
                 metadata.put("createdBy", tenant.getCreatedBy());
             } else if (parameter instanceof String) {
                 metadata.put("tenantId", (String)parameter);
-            } else if (parameter instanceof UpdateRegistryTenantRequest) {
-                UpdateRegistryTenantRequest tenant = (UpdateRegistryTenantRequest) parameter;
+            } else if (parameter instanceof UpdateApicurioTenantRequest) {
+                UpdateApicurioTenantRequest tenant = (UpdateApicurioTenantRequest) parameter;
                 if (tenant.getStatus() != null) {
                     metadata.put("tenantStatus", tenant.getStatus().value());
                 }
