@@ -1,9 +1,9 @@
 {
     "openapi": "3.0.2",
     "info": {
-        "title": "Apicurio Registry - Tenant Management API",
+        "title": "Apicurio - Tenant Management API",
         "version": "1.0.0",
-        "description": "The REST API to the Apicurio Registry Tenant Manager.  The Tenant Manager is responsible for creating and deleting tenants from a multi-tenant deployment of Apicurio Registry.",
+        "description": "The REST API to the Apicurio Tenant Manager.  The Tenant Manager is responsible for creating and deleting tenants from a multi-tenant aware system.",
         "license": {
             "name": "Apache 2.0",
             "url": "https://www.apache.org/licenses/LICENSE-2.0"
@@ -33,7 +33,7 @@
                 },
                 "operationId": "getSystemInfo",
                 "summary": "Get system information",
-                "description": "This operation retrieves information about the running registry system, such as the version\nof the software and when it was built."
+                "description": "This operation retrieves information about the running system, such as the version\nof the software and when it was built."
             }
         },
         "/tenants/{tenantId}": {
@@ -45,7 +45,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/RegistryTenant"
+                                    "$ref": "#/components/schemas/ApicurioTenant"
                                 }
                             }
                         },
@@ -67,7 +67,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/UpdateRegistryTenantRequest"
+                                "$ref": "#/components/schemas/UpdateApicurioTenantRequest"
                             }
                         }
                     },
@@ -176,11 +176,11 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/RegistryTenantList"
+                                    "$ref": "#/components/schemas/ApicurioTenantList"
                                 }
                             }
                         },
-                        "description": "Successful response - returns an object containing a slice of `RegistryTenant` entities."
+                        "description": "Successful response - returns an object containing a slice of `ApicurioTenant` entities."
                     },
                     "500": {
                         "$ref": "#/components/responses/ServerError"
@@ -188,7 +188,7 @@
                 },
                 "operationId": "getTenants",
                 "summary": "List Tenants",
-                "description": "Gets a list of `RegistryTenant` entities according to the query parameters set."
+                "description": "Gets a list of `ApicurioTenant` entities according to the query parameters set."
             },
             "post": {
                 "requestBody": {
@@ -196,7 +196,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/NewRegistryTenantRequest"
+                                "$ref": "#/components/schemas/NewApicurioTenantRequest"
                             }
                         }
                     },
@@ -207,7 +207,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/RegistryTenant"
+                                    "$ref": "#/components/schemas/ApicurioTenant"
                                 },
                                 "x-codegen-returnType": "javax.ws.rs.core.Response"
                             }
@@ -259,7 +259,7 @@
                 },
                 "x-codegen-package": "io.apicurio.multitenant.api.datamodel"
             },
-            "NewRegistryTenantRequest": {
+            "NewApicurioTenantRequest": {
                 "title": "Root Type for NewTenant",
                 "description": "The information required when creating a new tenant.",
                 "required": [
@@ -269,7 +269,7 @@
                 "type": "object",
                 "properties": {
                     "tenantId": {
-                        "description": "Unique identifier of a tenant within a registry deployment",
+                        "description": "Unique identifier of a tenant within the multitenant system",
                         "type": "string"
                     },
                     "organizationId": {
@@ -310,7 +310,7 @@
                 },
                 "x-codegen-package": "io.apicurio.multitenant.api.datamodel"
             },
-            "RegistryTenant": {
+            "ApicurioTenant": {
                 "title": "Root Type for Tenant",
                 "description": "Models a single tenant.",
                 "required": [
@@ -322,7 +322,7 @@
                 "type": "object",
                 "properties": {
                     "tenantId": {
-                        "description": "Unique identifier of a tenant within a registry deployment",
+                        "description": "Unique identifier of a tenant within the multitenant system",
                         "type": "string"
                     },
                     "createdOn": {
@@ -394,9 +394,9 @@
                     }
                 },
                 "example": {
-                    "name": "Apicurio Registry (SQL)",
-                    "description": "The Apicurio Registry application.",
-                    "version": "2.0.0.Final",
+                    "name": "Apicurio Tenant Manager",
+                    "description": "The Apicurio Tenant Manager application.",
+                    "version": "1.0.0.Final",
                     "builtOn": "2021-03-19T12:55:00Z"
                 },
                 "x-codegen-package": "io.apicurio.multitenant.api.datamodel"
@@ -411,8 +411,8 @@
                 "type": "object",
                 "properties": {
                     "type": {
-                        "$ref": "#/components/schemas/ResourceType",
-                        "description": "The type of the resource to limit"
+                        "description": "The type of the resource to limit",
+                        "type": "string"
                     },
                     "limit": {
                         "format": "int64",
@@ -426,24 +426,7 @@
                 },
                 "x-codegen-package": "io.apicurio.multitenant.api.datamodel"
             },
-            "ResourceType": {
-                "description": "The list of possible types of a resource that can be limited",
-                "enum": [
-                    "MAX_TOTAL_SCHEMAS_COUNT",
-                    "MAX_ARTIFACTS_COUNT",
-                    "MAX_VERSIONS_PER_ARTIFACT_COUNT",
-                    "MAX_ARTIFACT_PROPERTIES_COUNT",
-                    "MAX_PROPERTY_KEY_SIZE_BYTES",
-                    "MAX_PROPERTY_VALUE_SIZE_BYTES",
-                    "MAX_ARTIFACT_LABELS_COUNT",
-                    "MAX_LABEL_SIZE_BYTES",
-                    "MAX_ARTIFACT_NAME_LENGTH_CHARS",
-                    "MAX_ARTIFACT_DESCRIPTION_LENGTH_CHARS"
-                ],
-                "type": "string",
-                "x-codegen-package": "io.apicurio.multitenant.api.datamodel"
-            },
-            "UpdateRegistryTenantRequest": {
+            "UpdateApicurioTenantRequest": {
                 "title": "Root Type for NewTenant",
                 "description": "The information required when creating a new tenant.",
                 "required": [
@@ -493,7 +476,7 @@
                 "type": "string",
                 "x-codegen-package": "io.apicurio.multitenant.api.datamodel"
             },
-            "RegistryTenantList": {
+            "ApicurioTenantList": {
                 "description": "Describes the response received when searching for tenants.",
                 "required": [
                     "count",
@@ -502,10 +485,10 @@
                 "type": "object",
                 "properties": {
                     "items": {
-                        "description": "The RegistryTenants returned in the result set.",
+                        "description": "The ApicurioTenants returned in the result set.",
                         "type": "array",
                         "items": {
-                            "$ref": "#/components/schemas/RegistryTenant"
+                            "$ref": "#/components/schemas/ApicurioTenant"
                         }
                     },
                     "count": {

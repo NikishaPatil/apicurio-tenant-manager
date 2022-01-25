@@ -11,7 +11,7 @@ import javax.ws.rs.Produces;
 @Path("/api/v1/system")
 public interface SystemResource {
   /**
-   * This operation retrieves information about the running registry system, such as the version
+   * This operation retrieves information about the running system, such as the version
    * of the software and when it was built.
    */
   @Path("/info")

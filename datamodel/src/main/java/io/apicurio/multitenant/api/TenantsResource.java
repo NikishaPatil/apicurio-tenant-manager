@@ -1,14 +1,11 @@
 package io.apicurio.multitenant.api;
 
-import io.apicurio.multitenant.api.datamodel.NewRegistryTenantRequest;
-import io.apicurio.multitenant.api.datamodel.RegistryTenant;
-import io.apicurio.multitenant.api.datamodel.RegistryTenantList;
+import io.apicurio.multitenant.api.datamodel.ApicurioTenant;
+import io.apicurio.multitenant.api.datamodel.ApicurioTenantList;
+import io.apicurio.multitenant.api.datamodel.NewApicurioTenantRequest;
 import io.apicurio.multitenant.api.datamodel.SortBy;
 import io.apicurio.multitenant.api.datamodel.SortOrder;
-import io.apicurio.multitenant.api.datamodel.UpdateRegistryTenantRequest;
-
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
+import io.apicurio.multitenant.api.datamodel.UpdateApicurioTenantRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -31,7 +28,7 @@ public interface TenantsResource {
   @Path("/{tenantId}")
   @GET
   @Produces("application/json")
-  RegistryTenant getTenant(@PathParam("tenantId") String tenantId);
+  ApicurioTenant getTenant(@PathParam("tenantId") String tenantId);
 
   /**
    * Updates the name, description, and resources for a tenant.
@@ -39,7 +36,7 @@ public interface TenantsResource {
   @Path("/{tenantId}")
   @PUT
   @Consumes("application/json")
-  void updateTenant(@PathParam("tenantId") String tenantId, UpdateRegistryTenantRequest data);
+  void updateTenant(@PathParam("tenantId") String tenantId, UpdateApicurioTenantRequest data);
 
   /**
    * Marks an existing `Tenant` to be deleted.
@@ -49,12 +46,12 @@ public interface TenantsResource {
   void deleteTenant(@PathParam("tenantId") String tenantId);
 
   /**
-   * Gets a list of `RegistryTenant` entities according to the query parameters set.
+   * Gets a list of `ApicurioTenant` entities according to the query parameters set.
    */
   @GET
   @Produces("application/json")
-  RegistryTenantList getTenants(@QueryParam("status") String status,
-      @QueryParam("offset") @Min(0) Integer offset, @QueryParam("limit") @Min(1) @Max(500) Integer limit,
+  ApicurioTenantList getTenants(@QueryParam("status") String status,
+      @QueryParam("offset") Integer offset, @QueryParam("limit") Integer limit,
       @QueryParam("order") SortOrder order, @QueryParam("orderby") SortBy orderby);
 
   /**
@@ -63,5 +60,5 @@ public interface TenantsResource {
   @POST
   @Produces("application/json")
   @Consumes("application/json")
-  Response createTenant(NewRegistryTenantRequest data);
+  Response createTenant(NewApicurioTenantRequest data);
 }
