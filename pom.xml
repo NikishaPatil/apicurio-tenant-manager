@@ -83,7 +83,7 @@
 
         <!-- Libraries -->
         <apicurio-common-app-components.version>0.1.1.Final</apicurio-common-app-components.version>
-        <apicurio-common-rest-client.version>0.1.5.Final</apicurio-common-rest-client.version>
+        <apicurio-common-rest-client.version>0.1.7.Final</apicurio-common-rest-client.version>
         <jackson.version>2.12.5</jackson.version>
         <sentry.version>1.7.30</sentry.version>
         <junit.version>5.8.2</junit.version>
