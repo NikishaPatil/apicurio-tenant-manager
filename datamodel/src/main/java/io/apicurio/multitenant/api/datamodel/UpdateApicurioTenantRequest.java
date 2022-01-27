@@ -24,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "status"
 })
 @Generated("jsonschema2pojo")
-public class UpdateRegistryTenantRequest {
+public class UpdateApicurioTenantRequest {
 
     /**
      * The list of resources that this tenant will have at max. available

@@ -23,13 +23,13 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 public class TenantResource {
 
     /**
-     * The list of possible types of a resource that can be limited
+     * The type of the resource to limit
      * (Required)
      * 
      */
     @JsonProperty("type")
-    @JsonPropertyDescription("The list of possible types of a resource that can be limited")
-    private ResourceType type;
+    @JsonPropertyDescription("The type of the resource to limit")
+    private String type;
     /**
      * The quantity to limit this resource
      * (Required)
@@ -40,22 +40,22 @@ public class TenantResource {
     private Long limit;
 
     /**
-     * The list of possible types of a resource that can be limited
+     * The type of the resource to limit
      * (Required)
      * 
      */
     @JsonProperty("type")
-    public ResourceType getType() {
+    public String getType() {
         return type;
     }
 
     /**
-     * The list of possible types of a resource that can be limited
+     * The type of the resource to limit
      * (Required)
      * 
      */
     @JsonProperty("type")
-    public void setType(ResourceType type) {
+    public void setType(String type) {
         this.type = type;
     }
 

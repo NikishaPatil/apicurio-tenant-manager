@@ -30,7 +30,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import io.apicurio.multitenant.api.datamodel.RegistryTenant;
+import io.apicurio.multitenant.api.datamodel.ApicurioTenant;
 import io.apicurio.multitenant.api.datamodel.TenantStatusValue;
 
 /**
@@ -38,7 +38,7 @@ import io.apicurio.multitenant.api.datamodel.TenantStatusValue;
  */
 @Entity
 @Table(name = "tenants")
-public class RegistryTenantDto {
+public class ApicurioTenantDto {
 
     @Id
     @Column(name = "tenantId")
@@ -66,9 +66,9 @@ public class RegistryTenantDto {
     private String status;
 
     @OneToMany(mappedBy = "tenant", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<RegistryTenantResourceLimitDto> resources = new ArrayList<>();
+    private List<ApicurioTenantResourceLimitDto> resources = new ArrayList<>();
 
-    public RegistryTenantDto() {
+    public ApicurioTenantDto() {
         // empty
     }
 
@@ -142,26 +142,26 @@ public class RegistryTenantDto {
         this.status = status;
     }
 
-    public List<RegistryTenantResourceLimitDto> getResources() {
+    public List<ApicurioTenantResourceLimitDto> getResources() {
         return resources;
     }
 
-    public void setResources(List<RegistryTenantResourceLimitDto> resources) {
+    public void setResources(List<ApicurioTenantResourceLimitDto> resources) {
         this.resources = resources;
     }
 
-    public void addResource(RegistryTenantResourceLimitDto resource) {
+    public void addResource(ApicurioTenantResourceLimitDto resource) {
         resources.add(resource);
         resource.setTenant(this);
     }
 
-    public void removeResource(RegistryTenantResourceLimitDto resource) {
+    public void removeResource(ApicurioTenantResourceLimitDto resource) {
         resources.remove(resource);
         resource.setTenant(null);
     }
 
-    public RegistryTenant toDatamodel() {
-        final RegistryTenant t = new RegistryTenant();
+    public ApicurioTenant toDatamodel() {
+        final ApicurioTenant t = new ApicurioTenant();
         t.setTenantId(this.tenantId);
         t.setCreatedOn(this.createdOn);
         t.setCreatedBy(this.createdBy);
@@ -172,7 +172,7 @@ public class RegistryTenantDto {
                 Optional.ofNullable(this.resources)
                     .map(Collection::stream)
                     .orElseGet(Stream::empty)
-                    .map(RegistryTenantResourceLimitDto::toDatamodel)
+                    .map(ApicurioTenantResourceLimitDto::toDatamodel)
                     .collect(Collectors.toList()));
         t.setStatus(TenantStatusValue.fromValue(this.getStatus()));
         return t;

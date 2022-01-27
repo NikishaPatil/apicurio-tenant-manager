@@ -15,13 +15,12 @@
  */
 package io.apicurio.multitenant;
 
-import io.apicurio.multitenant.api.datamodel.NewRegistryTenantRequest;
-import io.apicurio.multitenant.api.datamodel.RegistryTenant;
-import io.apicurio.multitenant.api.datamodel.RegistryTenantList;
-import io.apicurio.multitenant.api.datamodel.ResourceType;
+import io.apicurio.multitenant.api.datamodel.NewApicurioTenantRequest;
+import io.apicurio.multitenant.api.datamodel.ApicurioTenant;
+import io.apicurio.multitenant.api.datamodel.ApicurioTenantList;
 import io.apicurio.multitenant.api.datamodel.TenantResource;
 import io.apicurio.multitenant.api.datamodel.TenantStatusValue;
-import io.apicurio.multitenant.api.datamodel.UpdateRegistryTenantRequest;
+import io.apicurio.multitenant.api.datamodel.UpdateApicurioTenantRequest;
 import io.apicurio.multitenant.client.TenantManagerClientImpl;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
@@ -44,15 +43,15 @@ import static io.restassured.RestAssured.given;
  * @author Fabian Martinez
  */
 @QuarkusTest
-public class RegistryTenantResourceTest {
+public class ApicurioTenantResourceTest {
 
     private static final String TENANTS_PATH = "/api/v1/tenants";
 
     @BeforeEach
     public void cleanup() {
         var client = new TenantManagerClientImpl("http://localhost:8081/");
-        List<RegistryTenant> list = client.listTenants();
-        list.forEach(t -> {
+        ApicurioTenantList list = client.listTenants(null, null, null, null, null);
+        list.getItems().forEach(t -> {
             if (t.getStatus() == TenantStatusValue.READY) {
                 client.deleteTenant(t.getTenantId());
             }
@@ -64,21 +63,21 @@ public class RegistryTenantResourceTest {
 
         assertEquals(200, res.statusCode());
 
-        var search = res.as(RegistryTenantList.class);
+        var search = res.as(ApicurioTenantList.class);
         assertEquals(0, search.getItems().size());
         assertEquals(0, search.getCount());
     }
 
     @Test
     public void testCRUD() {
-        NewRegistryTenantRequest req = new NewRegistryTenantRequest();
+        NewApicurioTenantRequest req = new NewApicurioTenantRequest();
         req.setTenantId(UUID.randomUUID().toString());
         req.setOrganizationId("aaa");
         req.setName("foo");
         req.setDescription("bar");
         TenantResource tr = new TenantResource();
         tr.setLimit(5L);
-        tr.setType(ResourceType.MAX_TOTAL_SCHEMAS_COUNT);
+        tr.setType("MAX_TOTAL_SCHEMAS_COUNT");
         req.setResources(List.of(tr));
 
         Response res = given()
@@ -90,7 +89,7 @@ public class RegistryTenantResourceTest {
 
         assertEquals(201, res.statusCode());
 
-        RegistryTenant tenant = res.as(RegistryTenant.class);
+        ApicurioTenant tenant = res.as(ApicurioTenant.class);
 
         assertNotNull(tenant);
         assertNotNull(tenant.getTenantId());
@@ -112,14 +111,14 @@ public class RegistryTenantResourceTest {
         testTenantNotFound("abcede");
     }
 
-    private void testGetTenant(String tenantId, NewRegistryTenantRequest req) {
+    private void testGetTenant(String tenantId, NewApicurioTenantRequest req) {
         Response res = given()
             .when().get(TENANTS_PATH + "/" + tenantId)
             .thenReturn();
 
         assertEquals(200, res.statusCode());
 
-        RegistryTenant tenant = res.as(RegistryTenant.class);
+        ApicurioTenant tenant = res.as(ApicurioTenant.class);
 
         assertEquals(tenantId, tenant.getTenantId());
         assertEquals(req.getOrganizationId(), tenant.getOrganizationId());
@@ -132,12 +131,12 @@ public class RegistryTenantResourceTest {
 
 
     private void testUpdateTenant(String tenantId) {
-        UpdateRegistryTenantRequest req = new UpdateRegistryTenantRequest();
+        UpdateApicurioTenantRequest req = new UpdateApicurioTenantRequest();
         req.setDescription("new description");
         req.setName("new name");
         TenantResource tr = new TenantResource();
         tr.setLimit(256L);
-        tr.setType(ResourceType.MAX_LABEL_SIZE_BYTES);
+        tr.setType("MAX_LABEL_SIZE_BYTES");
         req.setResources(List.of(tr));
 
         given().when()
@@ -150,14 +149,14 @@ public class RegistryTenantResourceTest {
         testGetTenantUpdated(tenantId, req);
     }
 
-    private void testGetTenantUpdated(String tenantId, UpdateRegistryTenantRequest req) {
+    private void testGetTenantUpdated(String tenantId, UpdateApicurioTenantRequest req) {
         Response res = given()
             .when().get(TENANTS_PATH + "/" + tenantId)
             .thenReturn();
 
         assertEquals(200, res.statusCode());
 
-        RegistryTenant tenant = res.as(RegistryTenant.class);
+        ApicurioTenant tenant = res.as(ApicurioTenant.class);
 
         assertEquals(tenantId, tenant.getTenantId());
         assertNotNull(req.getResources());
@@ -177,7 +176,7 @@ public class RegistryTenantResourceTest {
                 .when().get(TENANTS_PATH + "/" + tenantId)
                 .thenReturn();
         assertEquals(200, res.statusCode());
-        RegistryTenant tenant = res.as(RegistryTenant.class);
+        ApicurioTenant tenant = res.as(ApicurioTenant.class);
         assertEquals(TenantStatusValue.TO_BE_DELETED, tenant.getStatus());
     }
 
@@ -192,9 +191,9 @@ public class RegistryTenantResourceTest {
         StringBuilder builder = new StringBuilder();
         if (resources != null && !resources.isEmpty()) {
             List<TenantResource> sorted = new ArrayList<>(resources);
-            sorted.sort((r1, r2) -> r1.getType().name().compareTo(r2.getType().name()));
+            sorted.sort((r1, r2) -> r1.getType().compareTo(r2.getType()));
             sorted.forEach(r -> {
-                builder.append(r.getType().name());
+                builder.append(r.getType());
                 builder.append("@");
                 builder.append(r.getLimit());
                 builder.append("\n");

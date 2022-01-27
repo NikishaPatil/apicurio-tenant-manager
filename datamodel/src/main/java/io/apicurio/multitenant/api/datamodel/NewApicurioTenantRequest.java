@@ -26,15 +26,15 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "createdBy"
 })
 @Generated("jsonschema2pojo")
-public class NewRegistryTenantRequest {
+public class NewApicurioTenantRequest {
 
     /**
-     * Unique identifier of a tenant within a registry deployment
+     * Unique identifier of a tenant within the multitenant system
      * (Required)
      * 
      */
     @JsonProperty("tenantId")
-    @JsonPropertyDescription("Unique identifier of a tenant within a registry deployment")
+    @JsonPropertyDescription("Unique identifier of a tenant within the multitenant system")
     private String tenantId;
     /**
      * ID of the organization the tenant belongs to
@@ -74,7 +74,7 @@ public class NewRegistryTenantRequest {
     private String createdBy;
 
     /**
-     * Unique identifier of a tenant within a registry deployment
+     * Unique identifier of a tenant within the multitenant system
      * (Required)
      * 
      */
@@ -84,7 +84,7 @@ public class NewRegistryTenantRequest {
     }
 
     /**
-     * Unique identifier of a tenant within a registry deployment
+     * Unique identifier of a tenant within the multitenant system
      * (Required)
      * 
      */

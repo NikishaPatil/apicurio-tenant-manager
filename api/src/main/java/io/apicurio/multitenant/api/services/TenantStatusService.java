@@ -26,7 +26,7 @@ import javax.enterprise.context.ApplicationScoped;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import io.apicurio.multitenant.api.datamodel.TenantStatusValue;
-import io.apicurio.multitenant.storage.dto.RegistryTenantDto;
+import io.apicurio.multitenant.storage.dto.ApicurioTenantDto;
 import io.apicurio.multitenant.utils.Pair;
 
 /**
@@ -52,7 +52,7 @@ public class TenantStatusService {
         allowedTransitions = Collections.unmodifiableList(transitions);
     }
 
-    public boolean verifyTenantStatusChange(RegistryTenantDto tenant, TenantStatusValue newStatus) {
+    public boolean verifyTenantStatusChange(ApicurioTenantDto tenant, TenantStatusValue newStatus) {
         TenantStatusValue fromStatus = TenantStatusValue.fromValue(tenant.getStatus());
         if (fromStatus == newStatus) {
             return true;

@@ -30,22 +30,22 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "status"
 })
 @Generated("jsonschema2pojo")
-public class RegistryTenant {
+public class ApicurioTenant {
 
     /**
-     * Unique identifier of a tenant within a registry deployment
+     * Unique identifier of a tenant within the multitenant system
      * (Required)
      * 
      */
     @JsonProperty("tenantId")
-    @JsonPropertyDescription("Unique identifier of a tenant within a registry deployment")
+    @JsonPropertyDescription("Unique identifier of a tenant within the multitenant system")
     private String tenantId;
     /**
      * Date when the tenant was created. ISO 8601 UTC timestamp.
      * (Required)
      * 
      */
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssZ", timezone = "UTC")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "UTC")
     @JsonProperty("createdOn")
     @JsonPropertyDescription("Date when the tenant was created. ISO 8601 UTC timestamp.")
     private Date createdOn;
@@ -64,7 +64,7 @@ public class RegistryTenant {
      */
     @JsonProperty("organizationId")
     @JsonPropertyDescription("")
-    private Object organizationId;
+    private String organizationId;
     /**
      * The list of resources that this tenant has available
      * 
@@ -100,7 +100,7 @@ public class RegistryTenant {
     private TenantStatusValue status;
 
     /**
-     * Unique identifier of a tenant within a registry deployment
+     * Unique identifier of a tenant within the multitenant system
      * (Required)
      * 
      */
@@ -110,7 +110,7 @@ public class RegistryTenant {
     }
 
     /**
-     * Unique identifier of a tenant within a registry deployment
+     * Unique identifier of a tenant within the multitenant system
      * (Required)
      * 
      */
@@ -165,7 +165,7 @@ public class RegistryTenant {
      * 
      */
     @JsonProperty("organizationId")
-    public Object getOrganizationId() {
+    public String getOrganizationId() {
         return organizationId;
     }
 
@@ -175,7 +175,7 @@ public class RegistryTenant {
      * 
      */
     @JsonProperty("organizationId")
-    public void setOrganizationId(Object organizationId) {
+    public void setOrganizationId(String organizationId) {
         this.organizationId = organizationId;
     }
 

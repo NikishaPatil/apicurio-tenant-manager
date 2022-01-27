@@ -20,16 +20,16 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "count"
 })
 @Generated("jsonschema2pojo")
-public class RegistryTenantList {
+public class ApicurioTenantList {
 
     /**
-     * The RegistryTenants returned in the result set.
+     * The ApicurioTenants returned in the result set.
      * (Required)
      * 
      */
     @JsonProperty("items")
-    @JsonPropertyDescription("The RegistryTenants returned in the result set.")
-    private List<RegistryTenant> items = new ArrayList<RegistryTenant>();
+    @JsonPropertyDescription("The ApicurioTenants returned in the result set.")
+    private List<ApicurioTenant> items = new ArrayList<ApicurioTenant>();
     /**
      * The total number of items that matched the query that produced the result set (may be 
      * more than the number of items in the result set).
@@ -41,22 +41,22 @@ public class RegistryTenantList {
     private Integer count;
 
     /**
-     * The RegistryTenants returned in the result set.
+     * The ApicurioTenants returned in the result set.
      * (Required)
      * 
      */
     @JsonProperty("items")
-    public List<RegistryTenant> getItems() {
+    public List<ApicurioTenant> getItems() {
         return items;
     }
 
     /**
-     * The RegistryTenants returned in the result set.
+     * The ApicurioTenants returned in the result set.
      * (Required)
      * 
      */
     @JsonProperty("items")
-    public void setItems(List<RegistryTenant> items) {
+    public void setItems(List<ApicurioTenant> items) {
         this.items = items;
     }
 

@@ -35,7 +35,7 @@ public class TenantManagerClientErrorHandler implements RestClientErrorHandler {
             case 403:
                 return new ForbiddenException(IoUtil.toString(body));
             case 404:
-                return new RegistryTenantNotFoundException(IoUtil.toString(body));
+                return new ApicurioTenantNotFoundException(IoUtil.toString(body));
             default:
                 return new TenantManagerClientException(IoUtil.toString(body));
         }

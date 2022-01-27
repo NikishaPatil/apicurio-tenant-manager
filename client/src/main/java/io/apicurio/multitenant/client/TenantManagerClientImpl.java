@@ -19,13 +19,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.apicurio.multitenant.api.datamodel.NewRegistryTenantRequest;
-import io.apicurio.multitenant.api.datamodel.RegistryTenant;
-import io.apicurio.multitenant.api.datamodel.RegistryTenantList;
+import io.apicurio.multitenant.api.datamodel.NewApicurioTenantRequest;
+import io.apicurio.multitenant.api.datamodel.ApicurioTenant;
+import io.apicurio.multitenant.api.datamodel.ApicurioTenantList;
 import io.apicurio.multitenant.api.datamodel.SortBy;
 import io.apicurio.multitenant.api.datamodel.SortOrder;
 import io.apicurio.multitenant.api.datamodel.TenantStatusValue;
-import io.apicurio.multitenant.api.datamodel.UpdateRegistryTenantRequest;
+import io.apicurio.multitenant.api.datamodel.UpdateApicurioTenantRequest;
 import io.apicurio.multitenant.client.exception.TenantManagerClientErrorHandler;
 import io.apicurio.multitenant.client.exception.TenantManagerClientException;
 import io.apicurio.rest.client.JdkHttpClient;
@@ -83,12 +83,7 @@ public class TenantManagerClientImpl implements TenantManagerClient {
     }
 
     @Override
-    public List<RegistryTenant> listTenants() {
-        return listTenants(null, 0, 50, null, null).getItems();
-    }
-
-    @Override
-    public RegistryTenantList listTenants(TenantStatusValue status, Integer offset, Integer limit, SortOrder order, SortBy orderby) {
+    public ApicurioTenantList listTenants(TenantStatusValue status, Integer offset, Integer limit, SortOrder order, SortBy orderby) {
 
         Map<String, List<String>> queryParams = new HashMap<>();
         if (status != null) {
@@ -107,23 +102,23 @@ public class TenantManagerClientImpl implements TenantManagerClient {
             queryParams.put("orderby", Arrays.asList(orderby.value()));
         }
 
-        return client.sendRequest(new Request.RequestBuilder<RegistryTenantList>()
+        return client.sendRequest(new Request.RequestBuilder<ApicurioTenantList>()
                 .operation(GET)
                 .path(TENANTS_API_BASE_PATH)
                 .queryParams(queryParams)
-                .responseType(new TypeReference<RegistryTenantList>() {
+                .responseType(new TypeReference<ApicurioTenantList>() {
                 })
                 .build());
     }
 
     @Override
-    public RegistryTenant createTenant(NewRegistryTenantRequest tenantRequest) {
+    public ApicurioTenant createTenant(NewApicurioTenantRequest tenantRequest) {
         try {
-            return client.sendRequest(new Request.RequestBuilder<RegistryTenant>()
+            return client.sendRequest(new Request.RequestBuilder<ApicurioTenant>()
                     .operation(POST)
                     .path(TENANTS_API_BASE_PATH)
                     .data(IoUtil.toStream(mapper.writeValueAsBytes(tenantRequest)))
-                    .responseType(new TypeReference<RegistryTenant>() {
+                    .responseType(new TypeReference<ApicurioTenant>() {
                     })
                     .build());
         } catch (JsonProcessingException e) {
@@ -132,7 +127,7 @@ public class TenantManagerClientImpl implements TenantManagerClient {
     }
 
     @Override
-    public void updateTenant(String tenantId, UpdateRegistryTenantRequest updateRequest) {
+    public void updateTenant(String tenantId, UpdateApicurioTenantRequest updateRequest) {
         try {
             client.sendRequest(new Request.RequestBuilder<Void>()
                     .operation(PUT)
@@ -148,12 +143,12 @@ public class TenantManagerClientImpl implements TenantManagerClient {
     }
 
     @Override
-    public RegistryTenant getTenant(String tenantId) {
-        return client.sendRequest(new Request.RequestBuilder<RegistryTenant>()
+    public ApicurioTenant getTenant(String tenantId) {
+        return client.sendRequest(new Request.RequestBuilder<ApicurioTenant>()
                 .operation(GET)
                 .path(TENANTS_API_BASE_PATH_TENANT_PARAM)
                 .pathParams(Collections.singletonList(tenantId))
-                .responseType(new TypeReference<RegistryTenant>() {
+                .responseType(new TypeReference<ApicurioTenant>() {
                 }).build());
     }
 

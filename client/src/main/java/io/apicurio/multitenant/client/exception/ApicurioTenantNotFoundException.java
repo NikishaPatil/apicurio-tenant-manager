@@ -13,15 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.apicurio.multitenant;
 
-import io.quarkus.test.junit.NativeImageTest;
+package io.apicurio.multitenant.client.exception;
+
+import io.apicurio.rest.client.error.ApicurioRestClientException;
 
 /**
  * @author Fabian Martinez
  */
-@NativeImageTest
-public class NativeRegistryTenantResourceIT extends RegistryTenantResourceTest {
+public class ApicurioTenantNotFoundException extends ApicurioRestClientException {
 
-    // Execute the same tests but in native mode.
+    private static final long serialVersionUID = 1L;
+
+    public ApicurioTenantNotFoundException(String message) {
+        super(message);
+    }
 }

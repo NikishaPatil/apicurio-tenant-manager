@@ -13,26 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.apicurio.multitenant.api;
+package io.apicurio.multitenant.storage.hibernate;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
 
-import io.apicurio.multitenant.api.datamodel.RegistryDeploymentInfo;
-import io.apicurio.multitenant.api.services.RegistryDeploymentInfoService;
+import io.apicurio.multitenant.storage.dto.ApicurioTenantDto;
+import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
 
 /**
  * @author Fabian Martinez
  */
 @ApplicationScoped
-public class RegistryDeploymentResource implements RegistryResource {
-
-    @Inject
-    RegistryDeploymentInfoService deploymentInfoService;
-
-    @Override
-    public RegistryDeploymentInfo getRegistryInfo() {
-        return deploymentInfoService.getRegistryDeploymentInfo();
-    }
+public class ApicurioTenantPanacheRepository implements PanacheRepositoryBase<ApicurioTenantDto, String> {
 
 }

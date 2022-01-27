@@ -17,15 +17,15 @@
 package io.apicurio.multitenant.api.dto;
 
 import io.apicurio.multitenant.api.datamodel.TenantResource;
-import io.apicurio.multitenant.storage.dto.RegistryTenantResourceLimitDto;
+import io.apicurio.multitenant.storage.dto.ApicurioTenantResourceLimitDto;
 
 /**
  * @author Fabian Martinez
  */
 public class DtoMappers {
 
-    public static RegistryTenantResourceLimitDto toStorageDto(TenantResource t) {
-        RegistryTenantResourceLimitDto dto = new RegistryTenantResourceLimitDto();
+    public static ApicurioTenantResourceLimitDto toStorageDto(TenantResource t) {
+        ApicurioTenantResourceLimitDto dto = new ApicurioTenantResourceLimitDto();
         dto.setLimit(t.getLimit());
         dto.setType(t.getType());
         return dto;
