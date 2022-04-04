@@ -2,7 +2,7 @@
 .DEFAULT_GOAL := help
 
 
-# 'override' keyword prevents the variable from being overrideen
+# 'override' keyword prevents the variable from being overridden
 override MODULE_NAME := apicurio-tenant-manager
 override RED := \033[0;31m
 override BLUE := \033[36m
@@ -17,6 +17,7 @@ SKIP_TESTS ?= false
 IMAGE_ORG ?= apicurio
 IMAGE_REPO ?= docker.io
 IMAGE_TAG ?= latest
+IMAGE_NAME ?= $(MODULE_NAME)-api
 DOCKERFILE_NAME ?= Dockerfile.jvm
 DOCKERFILE_PATH ?= ./api/src/main/docker
 IMAGE_BUILD_WORKSPACE ?= ./api/
@@ -37,6 +38,7 @@ help:
 	@printf "$(BLUE)SKIP_TESTS$(NC)             Skips Tests. The Default value is '$(SKIP_TESTS)'\n"
 	@printf "$(BLUE)BUILD_FLAGS$(NC)            Additional maven build flags. By Default, it doesn't pass any additional flags.\n"
 	@printf "$(BLUE)IMAGE_ORG$(NC)              User/Organization of the Image. Default is '$(IMAGE_ORG)'\n"
+	@printf "$(BLUE)IMAGE_NAME$(NC)             Name of the image. Default is '$(IMAGE_NAME)'\n"
 	@printf "$(BLUE)IMAGE_REPO$(NC)             Image Repository of the image. Default is '$(IMAGE_REPO)'\n"
 	@printf "$(BLUE)IMAGE_TAG$(NC)              Image tag. Default is '$(IMAGE_TAG)'\n"
 	@printf "$(BLUE)DOCKERFILE_NAME$(NC)        Name of the dockerfile. Default is '$(DOCKERFILE_NAME)'\n"
@@ -60,18 +62,17 @@ build-project:
 .PHONY: build-image ## Build docker image
 build-image:
 	@echo "======================================================================"
-	@echo " Building Image $(IMAGE_REPO)/$(IMAGE_ORG)/$(MODULE_NAME):$(IMAGE_TAG)"
+	@echo " Building Image $(IMAGE_REPO)/$(IMAGE_ORG)/$(IMAGE_NAME):$(IMAGE_TAG)"
 	@echo "======================================================================"
-	docker build -f $(DOCKERFILE_PATH)/$(DOCKERFILE_NAME) -t $(IMAGE_REPO)/$(IMAGE_ORG)/$(MODULE_NAME):$(IMAGE_TAG) $(IMAGE_BUILD_WORKSPACE)
+	docker build -f $(DOCKERFILE_PATH)/$(DOCKERFILE_NAME) -t $(IMAGE_REPO)/$(IMAGE_ORG)/$(IMAGE_NAME):$(IMAGE_TAG) $(IMAGE_BUILD_WORKSPACE)
 
 
 .PHONY: push-image ## Push docker image
 push-image:
 	@echo "======================================================================"
-	@echo " Pushing Image $(IMAGE_REPO)/$(IMAGE_ORG)/$(MODULE_NAME):$(IMAGE_TAG)"
+	@echo " Pushing Image $(IMAGE_REPO)/$(IMAGE_ORG)/$(IMAGE_NAME):$(IMAGE_TAG)"
 	@echo "======================================================================"
-	docker push $(IMAGE_REPO)/$(IMAGE_ORG)/$(MODULE_NAME):$(IMAGE_TAG)
-
+	docker push $(IMAGE_REPO)/$(IMAGE_ORG)/$(IMAGE_NAME):$(IMAGE_TAG)
 
 # Please declare your targets as .PHONY in the format shown below, so that the 'make help' parses the information correctly.
 #
