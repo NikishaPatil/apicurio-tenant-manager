@@ -257,7 +257,7 @@
                     "error_code": 500,
                     "message": "An error occurred somewhere."
                 },
-                "x-codegen-package": "io.apicurio.multitenant.api.datamodel"
+                "x-codegen-package": "io.apicurio.tenantmanager.api.datamodel"
             },
             "NewApicurioTenantRequest": {
                 "title": "Root Type for NewTenant",
@@ -308,7 +308,7 @@
                     ],
                     "createdBy": "foo-user"
                 },
-                "x-codegen-package": "io.apicurio.multitenant.api.datamodel"
+                "x-codegen-package": "io.apicurio.tenantmanager.api.datamodel"
             },
             "ApicurioTenant": {
                 "title": "Root Type for Tenant",
@@ -373,7 +373,7 @@
                     ],
                     "status": "READY"
                 },
-                "x-codegen-package": "io.apicurio.multitenant.api.datamodel"
+                "x-codegen-package": "io.apicurio.tenantmanager.api.datamodel"
             },
             "SystemInfo": {
                 "title": "Root Type for SystemInfo",
@@ -400,7 +400,7 @@
                     "version": "1.0.0.Final",
                     "builtOn": "2021-03-19T12:55:00Z"
                 },
-                "x-codegen-package": "io.apicurio.multitenant.api.datamodel"
+                "x-codegen-package": "io.apicurio.tenantmanager.api.datamodel"
             },
             "TenantResource": {
                 "title": "Root Type for TenantResource",
@@ -425,7 +425,7 @@
                     "type": "MAX_TOTAL_SCHEMAS",
                     "limit": 1000
                 },
-                "x-codegen-package": "io.apicurio.multitenant.api.datamodel"
+                "x-codegen-package": "io.apicurio.tenantmanager.api.datamodel"
             },
             "UpdateApicurioTenantRequest": {
                 "title": "Root Type for NewTenant",
@@ -465,7 +465,7 @@
                     ],
                     "status": "TO_BE_DELETED"
                 },
-                "x-codegen-package": "io.apicurio.multitenant.api.datamodel"
+                "x-codegen-package": "io.apicurio.tenantmanager.api.datamodel"
             },
             "TenantStatusValue": {
                 "description": "\"READY\": Tenant status when ready for use.\n\n\"TO_BE_DELETED\": Tenant status when marked to be deleted with all it's data.\n\n\"DELETED\": Tenant status after data deletion is finished.\n",
@@ -475,7 +475,7 @@
                     "DELETED"
                 ],
                 "type": "string",
-                "x-codegen-package": "io.apicurio.multitenant.api.datamodel"
+                "x-codegen-package": "io.apicurio.tenantmanager.api.datamodel"
             },
             "ApicurioTenantList": {
                 "description": "Describes the response received when searching for tenants.",
@@ -497,7 +497,7 @@
                         "type": "integer"
                     }
                 },
-                "x-codegen-package": "io.apicurio.multitenant.api.datamodel"
+                "x-codegen-package": "io.apicurio.tenantmanager.api.datamodel"
             },
             "SortOrder": {
                 "description": "The order in which the list entries will be sorted",
@@ -506,7 +506,7 @@
                     "desc"
                 ],
                 "type": "string",
-                "x-codegen-package": "io.apicurio.multitenant.api.datamodel"
+                "x-codegen-package": "io.apicurio.tenantmanager.api.datamodel"
             },
             "SortBy": {
                 "description": "The name of the field that will be used for sorting",
@@ -516,7 +516,7 @@
                     "tenantId"
                 ],
                 "type": "string",
-                "x-codegen-package": "io.apicurio.multitenant.api.datamodel"
+                "x-codegen-package": "io.apicurio.tenantmanager.api.datamodel"
             }
         },
         "responses": {
