@@ -39,7 +39,7 @@ public @interface Audited {
 
     /**
      * If empty or null the method name will be used as the action identifier
-     * @return
+     * @return a String
      */
     String action() default "";
 

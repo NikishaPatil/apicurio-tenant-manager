@@ -35,7 +35,8 @@ public class LoggerProducer {
     private final Map<Class<?>, Logger> loggers = new HashMap<>();
 
     /**
-     * @param targetClass
+     * @param targetClass the class to target
+     * @return the logger
      */
     public Logger getLogger(Class<?> targetClass) {
         Logger logger = loggers.computeIfAbsent(targetClass, k -> {
@@ -46,7 +47,8 @@ public class LoggerProducer {
 
     /**
      * Produces a logger for injection.
-     * @param injectionPoint
+     * @param injectionPoint the injection point
+     * @return the logger
      */
     @Produces
     public Logger produceLogger(InjectionPoint injectionPoint) {

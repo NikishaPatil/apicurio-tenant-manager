@@ -42,7 +42,7 @@ public class TenantResourcesService {
 
     /**
      * Finds duplicates or unsupported resource types
-     * @param tenantResources
+     * @param tenantResources list of tenant resources
      */
     public void validateResources(List<TenantResource> tenantResources) {
         Set<String> items = new HashSet<>();

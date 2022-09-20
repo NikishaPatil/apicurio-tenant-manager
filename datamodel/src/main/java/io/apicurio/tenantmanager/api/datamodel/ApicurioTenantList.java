@@ -22,6 +22,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @Generated("jsonschema2pojo")
 public class ApicurioTenantList {
 
+    public ApicurioTenantList() {}
+
     /**
      * The ApicurioTenants returned in the result set.
      * (Required)
