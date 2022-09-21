@@ -17,7 +17,9 @@ package io.apicurio.tenantmanager.api;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -39,7 +41,6 @@ import io.apicurio.tenantmanager.api.datamodel.SortOrder;
 import io.apicurio.tenantmanager.api.datamodel.TenantStatusValue;
 import io.apicurio.tenantmanager.api.datamodel.UpdateApicurioTenantRequest;
 import io.apicurio.tenantmanager.api.dto.DtoMappers;
-import io.apicurio.tenantmanager.api.services.TenantResourcesService;
 import io.apicurio.tenantmanager.api.services.TenantStatusService;
 import io.apicurio.tenantmanager.logging.audit.Audited;
 import io.apicurio.tenantmanager.metrics.UsageMetrics;
@@ -61,9 +62,6 @@ public class TenantsResourceImpl implements TenantsResource {
 
     @Inject
     TenantStatusService tenantStatusService;
-
-    @Inject
-    TenantResourcesService resourcesService;
 
     @Inject
     UsageMetrics usageMetrics;
@@ -116,7 +114,13 @@ public class TenantsResourceImpl implements TenantsResource {
 
         if (tenantRequest.getResources() != null) {
             //find duplicates, invalid config
-            resourcesService.validateResources(tenantRequest.getResources());
+            Set<String> items = new HashSet<>();
+            for (var resource : tenantRequest.getResources()) {
+                if (!items.add(resource.getType())) {
+                    throw new BadRequestException(
+                            String.format("Invalid configuration, resource type %s is duplicated", resource.getType()));
+                }
+            }
 
             tenantRequest.getResources()
                 .stream()
@@ -156,7 +160,13 @@ public class TenantsResourceImpl implements TenantsResource {
 
         if (tenantRequest.getResources() != null) {
             //find duplicates, invalid config
-            resourcesService.validateResources(tenantRequest.getResources());
+            Set<String> items = new HashSet<>();
+            for (var resource : tenantRequest.getResources()) {
+                if (!items.add(resource.getType())) {
+                    throw new BadRequestException(
+                            String.format("Invalid configuration, resource type %s is duplicated", resource.getType()));
+                }
+            }
 
             // First remove all the old resources
             if (tenant.getResources() != null) {
