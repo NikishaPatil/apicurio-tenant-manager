@@ -19,7 +19,7 @@ on:
 jobs:
   release-images:
     if: github.repository_owner == 'Apicurio'
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     steps:
 
       - name: Fetch required Details
@@ -37,7 +37,6 @@ jobs:
       # This step will ensure that the release was created from the right commit  
       - name: Verify Project Version
         run: |
-          cd code
           PROJECT_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
           if [[ $PROJECT_VERSION != $RELEASE_VERSION ]]
           then
@@ -55,7 +54,7 @@ jobs:
         env:
           SKIP_TESTS: "true"
           BUILD_FLAGS: '-Dmaven.wagon.httpconnectionManager.maxTotal=30 -Dmaven.wagon.http.retryHandler.count=5 --no-transfer-progress'
-        run: cd code && make build-project
+        run: make build-project
 
       - name: Login to DockerHub Registry
         run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
