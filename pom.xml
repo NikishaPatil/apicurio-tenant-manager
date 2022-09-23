@@ -7,7 +7,7 @@
     <artifactId>apicurio-tenant-manager</artifactId>
     <name>apicurio-tenant-manager</name>
     <packaging>pom</packaging>
-    <version>0.1.0-SNAPSHOT</version>
+    <version>0.1.0.Final</version>
 
     <url>https://www.apicur.io/</url>
     <description>Common Tenant Manager component for multi-tenant deployments of Apicurio applications.</description>
