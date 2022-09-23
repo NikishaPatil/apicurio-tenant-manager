@@ -11,6 +11,7 @@
     </parent>
 
     <artifactId>apicurio-tenant-manager-api</artifactId>
+    <name>apicurio-tenant-manager-api</name>
 
     <dependencies>
         <dependency>
