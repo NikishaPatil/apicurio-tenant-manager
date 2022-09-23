@@ -41,7 +41,7 @@ import java.util.regex.Pattern;
  * about them.
  *
  * @author Miguel Soriano
- * @author Jakub Senko <jsenko@redhat.com>
+ * @author Jakub Senko
  */
 @Provider
 @Default

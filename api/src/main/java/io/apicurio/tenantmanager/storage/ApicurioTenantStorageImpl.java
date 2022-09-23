@@ -28,6 +28,7 @@ import org.hibernate.exception.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import io.apicurio.tenantmanager.api.datamodel.TenantStatusValue;
 import io.apicurio.tenantmanager.storage.dto.ApicurioTenantDto;
 import io.apicurio.tenantmanager.storage.hibernate.ApicurioTenantPanacheRepository;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
@@ -107,6 +108,12 @@ public class ApicurioTenantStorageImpl implements ApicurioTenantStorage {
             res.put((String) qr[0], ((Number) qr[1]).longValue());
         }
         return res;
+    }
+
+    public List<ApicurioTenantDto> getTenantsByStatus(TenantStatusValue status, int limit) {
+        return repo.find("status", Sort.ascending("createdOn"), status.value())
+                .page(0, limit)
+                .list();
     }
 
 }

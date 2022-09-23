@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import io.apicurio.tenantmanager.storage.dto.ApicurioTenantDto;
+import io.apicurio.tenantmanager.api.datamodel.TenantStatusValue;
 import io.quarkus.panache.common.Parameters;
 import io.quarkus.panache.common.Sort;
 
@@ -37,6 +38,8 @@ public interface ApicurioTenantStorage {
     long count(String query, Parameters parameters);
 
     void delete(String tenantId);
+
+    List<ApicurioTenantDto> getTenantsByStatus(TenantStatusValue status, int limit);
 
     public Map<String, Long> getTenantsCountByStatus();
 

@@ -43,8 +43,6 @@ import io.quarkus.test.junit.TestProfile;
 @TestProfile(AuthTestProfileWithoutRoles.class)
 @Tag(ApicurioTestTags.DOCKER)
 @Typed(TenantManagerClientAuthTest.class)
-@Disabled
-//TODO fix AuthTestProfileWithoutRoles , realm is not being created , use a oidc mock?
 public class TenantManagerClientAuthTest extends TenantManagerClientTest {
 
     @ConfigProperty(name = "tenant-manager.keycloak.url.configured")
