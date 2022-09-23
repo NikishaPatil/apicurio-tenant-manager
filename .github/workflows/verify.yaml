@@ -65,7 +65,7 @@ jobs:
         if: github.event_name == 'push'
         env:
           IMAGE_REPO: "quay.io"
-          IMAGE_TAG: "snapshot"
+          IMAGE_TAG: "latest"
         run: make build-image
 
       - name: List All The Images
@@ -76,7 +76,7 @@ jobs:
         if: github.event_name == 'push'
         env:
           IMAGE_REPO: "quay.io"
-          IMAGE_TAG: "snapshot"
+          IMAGE_TAG: "latest"
         run: make push-image
 
       
