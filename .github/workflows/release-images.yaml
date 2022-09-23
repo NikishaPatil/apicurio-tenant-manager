@@ -36,6 +36,7 @@ jobs:
       # We have faced issues in the past where a github release was created from a wrong commit
       # This step will ensure that the release was created from the right commit  
       - name: Verify Project Version
+        working-directory: code
         run: |
           PROJECT_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
           if [[ $PROJECT_VERSION != $RELEASE_VERSION ]]
@@ -51,6 +52,7 @@ jobs:
           architecture: x64
 
       - name: Verify Build
+        working-directory: code
         env:
           SKIP_TESTS: "true"
           BUILD_FLAGS: '-Dmaven.wagon.httpconnectionManager.maxTotal=30 -Dmaven.wagon.http.retryHandler.count=5 --no-transfer-progress'
@@ -60,6 +62,7 @@ jobs:
         run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
 
       - name: Build Images for Docker.io
+        working-directory: code
         env:
           IMAGE_TAG: "{{env.RELEASE_VERSION}}"
         run: make build-image
@@ -71,11 +74,13 @@ jobs:
         run: docker login -u "${{ secrets.QUAY_USERNAME }}" -p "${{ secrets.QUAY_PASSWORD }}" quay.io
 
       - name: Push Images To Docker.io
+        working-directory: code
         env:
           IMAGE_TAG: "{{env.RELEASE_VERSION}}"
         run: make push-image
 
       - name: Build Images for Quay.io
+        working-directory: code
         env:
           IMAGE_REPO: "quay.io"
           IMAGE_TAG: "{{env.RELEASE_VERSION}}"
@@ -85,7 +90,7 @@ jobs:
         run: docker images
 
       - name: Push Images To Quay.io
-        if: github.event_name == 'push'
+        working-directory: code
         env:
           IMAGE_REPO: "quay.io"
           IMAGE_TAG: "{{env.RELEASE_VERSION}}"
