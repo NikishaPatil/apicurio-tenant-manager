@@ -64,7 +64,7 @@ jobs:
       - name: Build Images for Docker.io
         working-directory: code
         env:
-          IMAGE_TAG: "{{env.RELEASE_VERSION}}"
+          IMAGE_TAG: "${{env.RELEASE_VERSION}}"
         run: make build-image
 
       - name: List All The Images
@@ -76,14 +76,14 @@ jobs:
       - name: Push Images To Docker.io
         working-directory: code
         env:
-          IMAGE_TAG: "{{env.RELEASE_VERSION}}"
+          IMAGE_TAG: "${{env.RELEASE_VERSION}}"
         run: make push-image
 
       - name: Build Images for Quay.io
         working-directory: code
         env:
           IMAGE_REPO: "quay.io"
-          IMAGE_TAG: "{{env.RELEASE_VERSION}}"
+          IMAGE_TAG: "${{env.RELEASE_VERSION}}"
         run: make build-image
 
       - name: List All The Images
@@ -93,7 +93,7 @@ jobs:
         working-directory: code
         env:
           IMAGE_REPO: "quay.io"
-          IMAGE_TAG: "{{env.RELEASE_VERSION}}"
+          IMAGE_TAG: "${{env.RELEASE_VERSION}}"
         run: make push-image
 
       - name: Google Chat Notification
