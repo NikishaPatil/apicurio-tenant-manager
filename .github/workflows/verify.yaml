@@ -64,7 +64,7 @@ jobs:
       - name: Build Images for Quay.io
         if: github.event_name == 'push'
         env:
-          IMAGE_ORG: "quay.io"
+          IMAGE_REPO: "quay.io"
           IMAGE_TAG: "snapshot"
         run: make build-image
 
@@ -75,7 +75,7 @@ jobs:
       - name: Push Images To Quay.io
         if: github.event_name == 'push'
         env:
-          IMAGE_ORG: "quay.io"
+          IMAGE_REPO: "quay.io"
           IMAGE_TAG: "snapshot"
         run: make push-image
 
