@@ -50,6 +50,7 @@ jobs:
         run: docker images
 
       - name: Login to DockerHub Registry
+        if: github.event_name == 'push'
         run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
 
       - name: Push Images To Docker.io
@@ -59,6 +60,7 @@ jobs:
         run: make push-image
 
       - name: Login to Quay.io Registry
+        if: github.event_name == 'push'
         run: docker login -u "${{ secrets.QUAY_USERNAME }}" -p "${{ secrets.QUAY_PASSWORD }}" quay.io
 
       - name: Build Images for Quay.io
