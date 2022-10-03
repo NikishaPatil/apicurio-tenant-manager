@@ -47,8 +47,8 @@ build_project() {
 
 
     docker login -u "${QUAY_USER}" -p "${QUAY_TOKEN}" quay.io
-    docker build -t apicurio-registry-test -f Dockerfile.testing .
-    docker run -i apicurio-registry-test
+    docker build -t apicurio-tenant-manager-test -f Dockerfile.testing .
+    docker run -i apicurio-tenant-manager-test
 
 }
 
