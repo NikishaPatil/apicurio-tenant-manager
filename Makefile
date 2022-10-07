@@ -52,10 +52,9 @@ help:
 build-project:
 	@echo "======================================================================"
 	@echo " Building Module '$(MODULE_NAME)'"
-	@echo " SKIP_TESTS: $(SKIP_TESTS)"
 	@echo " BUILD_FLAGS: $(BUILD_FLAGS)"
 	@echo "======================================================================"
-	./mvnw clean install -DskipTests=$(SKIP_TESTS) $(BUILD_FLAGS)
+	CURRENT_ENV=mas ./mvnw clean install -Dmaven.javadoc.skip=true --no-transfer-progress -DtrimStackTrace=false -DskipTests=true
 
 
 

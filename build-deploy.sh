@@ -11,7 +11,7 @@ IMAGE_ORG="rhoas"
 IMAGE_TAG="${VERSION}"
 
 TENANT_MANAGER_IMAGE_NAME="srs-tenant-manager"
-TENANT_MANAGER_DOCKER_BUILD_COMMAND="docker build -f ./api/src/main/docker/Dockerfile.jvm -t ${IMAGE_REGISTRY}/${IMAGE_ORG}/${TENANT_MANAGER_IMAGE_NAME}:${IMAGE_TAG} ./distro/docker/target/docker"
+TENANT_MANAGER_DOCKER_BUILD_COMMAND="docker build -f ./api/src/main/docker/Dockerfile.jvm -t ${IMAGE_REGISTRY}/${IMAGE_ORG}/${TENANT_MANAGER_IMAGE_NAME}:${IMAGE_TAG} ./api/"
 
 
 
@@ -65,7 +65,7 @@ build_project() {
     docker run -v $(pwd):/opt/srs -w /opt/srs -e HOME=/tmp -u $(id -u) \
         -e LANG=en_US.UTF-8 \
         -e LANGUAGE=en_US:en \
-        -e LC_ALL=en_US.UTF-8 \
+        -e MAVEN_CONFIG='' \
         quay.io/app-sre/mk-ci-tools:latest make build-project
 }
 
