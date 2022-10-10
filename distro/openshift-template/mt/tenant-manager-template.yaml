@@ -306,6 +306,10 @@ parameters:
   displayName: Tenant Manager Image Repository
   required: true
 
+- name: IMAGE_REGISTRY
+  displayName: Image Registry
+  required: true
+
 - name: IMAGE_TAG
   displayName: Image tag for Apicurio Registry and Tenant Manager
   value: latest
