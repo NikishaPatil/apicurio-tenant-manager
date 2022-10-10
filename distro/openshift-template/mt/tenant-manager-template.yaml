@@ -337,6 +337,10 @@ parameters:
   description: Secret name with database SSL CA
   required: true
 
+- name: TENANT_MANAGER_CLIENT_SECRET_NAME
+  description: k8s secret name with client-id and client-secret to access tenant-manager
+  required: true
+
 - name: AUTH_ENABLED
   description: flag to enable/disable authentication
   value: "false"
