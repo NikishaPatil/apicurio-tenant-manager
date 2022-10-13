@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.apicurio.tenantmanager.api;
+package io.apicurio.tenantmanager;
 
 import io.apicurio.tenantmanager.api.datamodel.TenantStatusValue;
 import io.apicurio.tenantmanager.storage.ApicurioTenantStorage;
