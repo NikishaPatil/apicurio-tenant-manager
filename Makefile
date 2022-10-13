@@ -54,7 +54,7 @@ build-project:
 	@echo " Building Module '$(MODULE_NAME)'"
 	@echo " BUILD_FLAGS: $(BUILD_FLAGS)"
 	@echo "======================================================================"
-	CURRENT_ENV=mas ./mvnw clean install -Dmaven.javadoc.skip=true --no-transfer-progress -DtrimStackTrace=false -DskipTests=true
+	CURRENT_ENV=mas ./mvnw clean install -Dmaven.javadoc.skip=true --no-transfer-progress -DtrimStackTrace=false
 
 
 
