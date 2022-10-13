@@ -23,6 +23,7 @@ import java.util.Optional;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.PersistenceException;
+import javax.transaction.Transactional;
 
 import org.hibernate.exception.ConstraintViolationException;
 import org.slf4j.Logger;
@@ -47,6 +48,7 @@ public class ApicurioTenantStorageImpl implements ApicurioTenantStorage {
     ApicurioTenantPanacheRepository repo;
 
     @Override
+    @Transactional
     public void save(ApicurioTenantDto dto) {
         try {
             repo.persistAndFlush(dto);
@@ -68,6 +70,7 @@ public class ApicurioTenantStorageImpl implements ApicurioTenantStorage {
     }
 
     @Override
+    @Transactional
     public void delete(String tenantId) {
         ApicurioTenantDto dto = findByTenantId(tenantId)
             .orElseThrow(() -> TenantNotFoundException.create(tenantId));
