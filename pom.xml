@@ -84,13 +84,11 @@
 
         <!-- Libraries -->
         <apicurio-common-rest-client.version>0.1.13.Final</apicurio-common-rest-client.version>
-        <apicurio-common-app-components.version>0.1.13.Final</apicurio-common-app-components.version>
+        <apicurio-common-app-components.version>0.1.14.Final</apicurio-common-app-components.version>
         <jackson.version>2.13.4</jackson.version>
         <sentry.version>1.7.30</sentry.version>
         <junit.version>5.9.1</junit.version>
-
-        <!-- Test Containers -->
-        <keycloak.testcontainers.version>2.3.0</keycloak.testcontainers.version>
+        <wiremock-jre8.version>2.34.0</wiremock-jre8.version>
 
         <!-- Plugins -->
         <version.maven-javadoc-plugin>3.4.1</version.maven-javadoc-plugin>
@@ -199,18 +197,17 @@
                 <version>${sentry.version}</version><!--$NO-MVN-MAN-VER$ -->
             </dependency>
 
-            <!-- Test Containers -->
-            <dependency>
-                <groupId>com.github.dasniko</groupId>
-                <artifactId>testcontainers-keycloak</artifactId>
-                <version>${keycloak.testcontainers.version}</version>
-            </dependency>
-
             <!-- JUnit -->
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter</artifactId>
                 <version>${junit.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.github.tomakehurst</groupId>
+                <artifactId>wiremock-jre8</artifactId>
+                <version>${wiremock-jre8.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

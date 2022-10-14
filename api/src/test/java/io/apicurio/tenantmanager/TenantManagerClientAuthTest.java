@@ -20,6 +20,7 @@ import java.util.Collections;
 
 import javax.enterprise.inject.Typed;
 
+import io.apicurio.common.apps.test.JWKSMockServer;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
@@ -48,7 +49,6 @@ public class TenantManagerClientAuthTest extends TenantManagerClientTest {
     @ConfigProperty(name = "tenant-manager.keycloak.url.configured")
     String authServerUrl;
 
-    String clientId = "registry-api";
 
     ApicurioHttpClient httpClient;
 
@@ -59,13 +59,13 @@ public class TenantManagerClientAuthTest extends TenantManagerClientTest {
     @Override
     protected TenantManagerClient createRestClient() {
         httpClient = ApicurioHttpClientFactory.create(authServerUrl, new AuthErrorHandler());
-        OidcAuth auth = new OidcAuth(httpClient, clientId, "test1");
+        OidcAuth auth = new OidcAuth(httpClient, JWKSMockServer.ADMIN_CLIENT_ID, "test1");
         return this.createClient(auth);
     }
 
     @Test
     public void testWrongCreds() throws Exception {
-        OidcAuth auth = new OidcAuth(httpClient, clientId, "wrongsecret");
+        OidcAuth auth = new OidcAuth(httpClient, JWKSMockServer.WRONG_CREDS_CLIENT_ID, "wrongsecret");
         TenantManagerClient client = createClient(auth);
         Assertions.assertThrows(NotAuthorizedException.class, () -> client.listTenants(null, 0, 10, null, null));
     }
