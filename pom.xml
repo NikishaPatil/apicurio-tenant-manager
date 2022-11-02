@@ -88,7 +88,7 @@
         <jackson.version>2.13.4</jackson.version>
         <sentry.version>1.7.30</sentry.version>
         <junit.version>5.9.1</junit.version>
-        <wiremock-jre8.version>2.34.0</wiremock-jre8.version>
+        <wiremock-jre8.version>2.35.0</wiremock-jre8.version>
 
         <!-- Plugins -->
         <version.maven-javadoc-plugin>3.4.1</version.maven-javadoc-plugin>
