@@ -85,7 +85,7 @@
         <!-- Libraries -->
         <apicurio-common-rest-client.version>0.1.14</apicurio-common-rest-client.version>
         <apicurio-common-app-components.version>0.1.14.Final</apicurio-common-app-components.version>
-        <jackson.version>2.13.4</jackson.version>
+        <jackson.version>2.14.1</jackson.version>
         <sentry.version>1.7.30</sentry.version>
         <junit.version>5.9.1</junit.version>
         <wiremock-jre8.version>2.34.0</wiremock-jre8.version>
