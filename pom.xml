@@ -83,7 +83,7 @@
         <jandex.version>1.1.1</jandex.version>
 
         <!-- Libraries -->
-        <apicurio-common-rest-client.version>0.1.13.Final</apicurio-common-rest-client.version>
+        <apicurio-common-rest-client.version>0.1.14</apicurio-common-rest-client.version>
         <apicurio-common-app-components.version>0.1.14.Final</apicurio-common-app-components.version>
         <jackson.version>2.13.4</jackson.version>
         <sentry.version>1.7.30</sentry.version>
